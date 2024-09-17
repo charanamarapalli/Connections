@@ -1,10 +1,19 @@
 package connections.connections_api.Model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
+@Entity
 public class Users {
 	
+	@Id
 	private int userId;
 	private String userName;
 	private String password;
+	
+    public Users() {
+    }
+    
 	public Users(int userId, String userName, String password) {
 		this.userId = userId;
 		this.userName = userName;
