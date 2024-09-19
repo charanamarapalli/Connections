@@ -18,6 +18,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import connections.connections_api.Service.MyUserDetailsService;
 
@@ -27,6 +28,9 @@ public class SecurityConfig {
 	
 	@Autowired
 	private MyUserDetailsService userDetailsService;
+	
+	@Autowired
+	private JwtFilter jwtFilter;
 
 
 	@Bean
@@ -40,6 +44,7 @@ public class SecurityConfig {
 		// every time we send credentials (login user name and password) through authorization headers 
 		http.sessionManagement(a -> a.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 		//session is not needed- so every time we hit an request, new session creates.
+		http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 		
 		// By default csrf, session management, authorize http request settings are different. So we changed. remaining we made it default.
 		return http.build();
