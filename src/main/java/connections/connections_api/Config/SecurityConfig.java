@@ -3,15 +3,18 @@ package connections.connections_api.Config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
@@ -29,7 +32,9 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http.csrf(a -> a.disable());
-		http.authorizeHttpRequests(a-> a.anyRequest().authenticated());   //to make sure all requests are authorized
+		http.authorizeHttpRequests(a->
+		a.requestMatchers("/login/**").permitAll()
+		.anyRequest().authenticated());   //to make sure all requests are authorized
 		//http.formLogin(Customizer.withDefaults());  // form login - Session gets stored
 		http.httpBasic(Customizer.withDefaults());   // Basic authentication - No session stored, 
 		// every time we send credentials (login user name and password) through authorization headers 
@@ -56,9 +61,14 @@ public class SecurityConfig {
 	@Bean
 	public AuthenticationProvider authenticationProvider() {
 		 DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-		 provider.setPasswordEncoder(NoOpPasswordEncoder.getInstance());
+		 provider.setPasswordEncoder(new BCryptPasswordEncoder(12));
 		 provider.setUserDetailsService(userDetailsService);
 		 return provider;
+	}
+	
+	@Bean
+	public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception{
+		return authConfig.getAuthenticationManager();
 	}
 	
 }

@@ -1,21 +1,26 @@
 package connections.connections_api.Model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
 public class Users {
 	
 	@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int userId;
 	private String userName;
+	private String userEmail;
 	private String password;
 	
     public Users() {
     }
     
-	public Users(int userId, String userName, String password) {
+	public Users(int userId,String userEmail, String userName, String password) {
 		this.userId = userId;
+		this.userEmail=userEmail;
 		this.userName = userName;
 		this.password = password;
 	}
@@ -37,10 +42,22 @@ public class Users {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
+	public String getUserEmail() {
+		return userEmail;
+	}
+
+	public void setUserEmail(String userEmail) {
+		this.userEmail = userEmail;
+	}
+
 	@Override
 	public String toString() {
-		return "{userId=" + userId + ", userName=" + userName + ", password=" + password + "}";
+		return "Users [userId=" + userId + ", userName=" + userName + ", userEmail=" + userEmail + ", password=" + password
+				+ "]";
 	}
+	
+	
 	
 	
 	

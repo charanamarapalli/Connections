@@ -2,6 +2,7 @@ package connections.connections_api.Model;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Optional;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -27,7 +28,7 @@ public class UserPrincipal implements UserDetails {
 
 	@Override
 	public String getUsername() {
-		return user.getUserName();
+		return user.getUserEmail();
 	}
 
 }
