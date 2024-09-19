@@ -61,7 +61,7 @@ public class MyUserDetailsService implements UserDetailsService {
 				.authenticate(new UsernamePasswordAuthenticationToken(user.getUserEmail(), user.getPassword()));
 		
 		if(authentication.isAuthenticated()) {
-			return "User logged in";
+			return jwtService.generateToken(user.getUserEmail());
 		}
 		return "Unable to login";
 	}
