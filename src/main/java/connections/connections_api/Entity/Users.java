@@ -1,4 +1,4 @@
-package connections.connections_api.Model;
+package connections.connections_api.Entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
