@@ -1,12 +1,9 @@
 package connections.connections_api.Controller;
 
-import java.util.Optional;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,11 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import connections.connections_api.Entity.Users;
 import connections.connections_api.Service.MyUserDetailsService;
-import connections.connections_api.common.Exceptions.UserNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping("/login")
+@RequestMapping("/api/prelogin")
 public class LoginController {
 
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
@@ -34,6 +30,7 @@ public class LoginController {
 		return (CsrfToken) request.getAttribute("_csrf");
 	}
 	
+	
 	//csrf token is required by default in order to hit an api. Or else, i will get a 401 un-authorized
 	@PostMapping("/registerUser")
 	public ResponseEntity<String> registerUser(@RequestBody Users user) {
@@ -42,8 +39,13 @@ public class LoginController {
 	}
 	
 	@PostMapping("/login")
-	public String loginUser(@RequestBody Users user) {
+	public ResponseEntity<String> loginUser(@RequestBody Users user) {
 	    logger.debug("login user controller");
-		return myUserDetailsService.verify(user);
+		return new ResponseEntity<>(myUserDetailsService.verify(user), HttpStatus.OK);
+	}
+	
+	@GetMapping("/getCurrentStatus")
+	public String getRandomText() {
+		return "Hey ";
 	}
 }

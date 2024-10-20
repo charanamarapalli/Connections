@@ -21,7 +21,6 @@
             </column>
         </createTable>
 
-        <!-- Add this if your database supports auto-increment -->
         <addAutoIncrement tableName="users" columnName="user_id" columnDataType="INT"/>
     </changeSet>
 </databaseChangeLog>
