@@ -13,23 +13,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import connections.connections_api.Entity.Users;
-import connections.connections_api.Service.MyUserDetailsService;
+import connections.connections_api.Service.Impl.MyUserDetailsServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping("/api/prelogin")
+@RequestMapping("/api/")
 public class LoginController {
 
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 	
 	@Autowired
-	private MyUserDetailsService myUserDetailsService;
+	private MyUserDetailsServiceImpl myUserDetailsService;
 	
 	@GetMapping("/getCsrfToken")
 	public CsrfToken getCsrfToken(HttpServletRequest request) {
 		return (CsrfToken) request.getAttribute("_csrf");
 	}
-	
 	
 	//csrf token is required by default in order to hit an api. Or else, i will get a 401 un-authorized
 	@PostMapping("/registerUser")
@@ -46,6 +45,6 @@ public class LoginController {
 	
 	@GetMapping("/getCurrentStatus")
 	public String getRandomText() {
-		return "Hey ";
+		return "Hey";
 	}
 }

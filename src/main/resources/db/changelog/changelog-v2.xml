@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.29.xsd">
+
+	<changeSet id="2" author="charan">
+		<createTable tableName="default_applications">
+			<column name="application_id" type="INT">
+				<constraints primaryKey="true" nullable="false"
+					primaryKeyName="application_id" />
+			</column>
+			<column name="application_name" type="VARCHAR(100)">
+				<constraints nullable="false" unique="true" />
+			</column>
+			<column name="application_description" type="VARCHAR(500)">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+
+		<createTable tableName="user_applications">
+			<column name="user_id" type="int">
+				<constraints nullable="false" />
+			</column>
+			<column name="application_id" type="int">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+		<addPrimaryKey constraintName="pk_user_applications"
+			tableName="user_applications" columnNames="user_id, application_id" />
+		<addForeignKeyConstraint
+			baseTableName="user_applications" baseColumnNames="user_id"
+			referencedTableName="users" referencedColumnNames="user_id"
+			constraintName="fk_user_applications_users" />
+			<addForeignKeyConstraint
+			baseTableName="user_applications"
+			baseColumnNames="application_id"
+			referencedTableName="default_applications"
+			referencedColumnNames="application_id"
+			constraintName="user_applications_default_applications"/>
+	</changeSet>
+</databaseChangeLog>

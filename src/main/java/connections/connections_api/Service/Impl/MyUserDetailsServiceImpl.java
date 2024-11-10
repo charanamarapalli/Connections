@@ -1,4 +1,4 @@
-package connections.connections_api.Service;
+package connections.connections_api.Service.Impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -23,9 +23,9 @@ import connections.connections_api.common.Exceptions.IncorrectPasswordException;
 import connections.connections_api.common.Exceptions.UserNotFoundException;
 
 @Service
-public class MyUserDetailsService implements UserDetailsService {
+public class MyUserDetailsServiceImpl implements UserDetailsService {
 
-    private static final Logger logger = LoggerFactory.getLogger(MyUserDetailsService.class);
+    private static final Logger logger = LoggerFactory.getLogger(MyUserDetailsServiceImpl.class);
 
 	@Autowired
 	private UserRepositoryInterface userRepositoryInterface;
@@ -35,7 +35,7 @@ public class MyUserDetailsService implements UserDetailsService {
 	 private AuthenticationManager authManager;
 	
 	@Autowired
-	private JwtService jwtService;
+	private JwtServiceImpl jwtService;
 	
 	
 	@Override

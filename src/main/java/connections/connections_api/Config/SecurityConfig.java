@@ -17,7 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import connections.connections_api.Service.MyUserDetailsService;
+import connections.connections_api.Service.Impl.MyUserDetailsServiceImpl;
 
 @Configuration
 @EnableWebSecurity
@@ -26,7 +26,7 @@ public class SecurityConfig {
     private static final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
 	
 	@Autowired
-	private MyUserDetailsService userDetailsService;
+	private MyUserDetailsServiceImpl userDetailsService;
 	
 	@Autowired
 	private JwtFilter jwtFilter;
@@ -36,8 +36,8 @@ public class SecurityConfig {
 		logger.debug("Started Security Filter chain");
 		http.csrf(a -> a.disable());
 		http.authorizeHttpRequests(a->
-		a.requestMatchers("api/prelogin/**").permitAll()
-		.anyRequest().authenticated());   //to make sure all requests are authorized
+		a.requestMatchers("api/**").permitAll());
+		//.anyRequest().authenticated());   //to make sure all requests are authorized
 		//http.formLogin(Customizer.withDefaults());  // form login - Session gets stored
 		http.httpBasic(Customizer.withDefaults());   // Basic authentication - No session stored, 
 		// every time we send credentials (login user name and password) through authorization headers 
@@ -45,7 +45,6 @@ public class SecurityConfig {
 		//session is not needed- so every time we hit an request, new session creates.
 		logger.debug("before jwt Filter chain");
 		http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-		
 		// By default csrf, session management, authorize http request settings are different. So we changed. remaining we made it default.
 		return http.build();
 	}

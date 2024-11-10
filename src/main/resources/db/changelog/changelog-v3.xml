@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.29.xsd">
+
+	<changeSet id="5" author="charan">
+		<createTable tableName="first_meet">
+			<column name="id" type="INT">
+				<constraints primaryKey="true" nullable="false"
+					primaryKeyName="id" />
+			</column>
+			<column name="user_id" type="INT">
+				<constraints nullable="true" unique="true" />
+			</column>
+			<column name="title" type="VARCHAR(100)">
+				<constraints nullable="false" />
+			</column>
+			<column name="description" type="VARCHAR(2000)">
+				<constraints nullable="false" />
+			</column>
+			<column name="is_enabled" type="boolean">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+		<addAutoIncrement tableName="first_meet"
+			columnName="id" columnDataType="INT" />
+	</changeSet>
+
+	<changeSet id="6" author="charan">
+		<addColumn tableName="first_meet">
+			<column name="is_enabled" type="boolean">
+				<constraints nullable="true" />
+			</column>
+		</addColumn>
+		</changeSet>
+
+
+</databaseChangeLog>

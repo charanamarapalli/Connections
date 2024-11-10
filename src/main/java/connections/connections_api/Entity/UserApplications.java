@@ -4,16 +4,14 @@ import org.hibernate.annotations.ManyToAny;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 
-public class UserSections {
-	
+public class UserApplications {
 	@Id
     @ManyToAny
     @JoinColumn(name = "userId", nullable = false)
-    private Users user;
+    private Users user_id;
 
     @Id
     @ManyToAny
-    @JoinColumn(name = "sectionId", nullable = false)
-    private Sections defaultSection;
-	
+    @JoinColumn(name = "application_id", nullable = false)
+    private DefaultApplications applicationId;
 }
