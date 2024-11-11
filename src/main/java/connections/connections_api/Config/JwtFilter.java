@@ -2,7 +2,6 @@ package connections.connections_api.Config;
 
 import java.io.IOException;
 
-import org.slf4j.helpers.Reporter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpHeaders;
@@ -60,6 +59,9 @@ public class JwtFilter extends OncePerRequestFilter {
 						null, userDetails.getAuthorities());
 				upatToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 				SecurityContextHolder.getContext().setAuthentication(upatToken);
+				Integer userId = jwtService.extractUserId(jwtToken);
+				request.setAttribute("userId", userId);
+				request.setAttribute("userEmail", userEmail);
 			}
 		}
 

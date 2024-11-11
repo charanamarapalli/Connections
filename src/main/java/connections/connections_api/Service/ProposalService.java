@@ -5,10 +5,18 @@ import connections.connections_api.dto.FirstMeetDto;
 import connections.connections_api.dto.ProposalDto;
 
 public interface ProposalService {
+	
+	AllProposalDataDto getAllProposalDataByUserId(Integer userId);
+	
+	ProposalDto saveProposalDataByUserId(Integer userId, ProposalDto proposalDto);
 
-	AllProposalDataDto getAllProposalDataByUserId(int userId);
+	FirstMeetDto saveFirstMeetDataByUserId(Integer userId, FirstMeetDto firstMeetDto);
+
+	FirstMeetDto getFirstMeetDataByUserId(Integer userId);
+
+	ProposalDto getProposalDataByUserId(Integer userId);
 	
-	AllProposalDataDto saveFirstMeetDataByUserId(int userId, FirstMeetDto firstMeetDto);
+	FirstMeetDto getDefaultFirstMeetData();
 	
-	AllProposalDataDto saveProposalDataByUserId(int userId, ProposalDto proposalDto);
+	ProposalDto getDefaultProposalData();
 }

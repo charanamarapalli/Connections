@@ -2,12 +2,14 @@ package connections.connections_api.Service.Impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,11 +21,12 @@ import org.slf4j.LoggerFactory;
 import connections.connections_api.Entity.UserPrincipal;
 import connections.connections_api.Entity.Users;
 import connections.connections_api.Repository.UserRepositoryInterface;
+import connections.connections_api.Service.MyUserDetailsService;
 import connections.connections_api.common.Exceptions.IncorrectPasswordException;
 import connections.connections_api.common.Exceptions.UserNotFoundException;
 
 @Service
-public class MyUserDetailsServiceImpl implements UserDetailsService {
+public class MyUserDetailsServiceImpl implements MyUserDetailsService {
 
     private static final Logger logger = LoggerFactory.getLogger(MyUserDetailsServiceImpl.class);
 
@@ -57,8 +60,8 @@ public class MyUserDetailsServiceImpl implements UserDetailsService {
 		return "Applicant registered Successfully";
 	}
 
-	public String verify(Users user) {
-	   userRepositoryInterface.findByUserEmail(user.getUserEmail())
+	public ResponseEntity<String> verify(Users user) {
+	   Users verifiedUser = userRepositoryInterface.findByUserEmail(user.getUserEmail())
 	                .orElseThrow(() -> new UserNotFoundException("User does not exist"));
 		 
 		try { 
@@ -66,13 +69,23 @@ public class MyUserDetailsServiceImpl implements UserDetailsService {
 				.authenticate(new UsernamePasswordAuthenticationToken(user.getUserEmail(), user.getPassword()));
 		
 		if(authentication.isAuthenticated()) {
+			Integer userId = verifiedUser.getUserId();
+			HttpHeaders headers = new HttpHeaders();
+	        headers.set("Authorization", "Bearer " + jwtService.generateToken(user.getUserEmail(), userId));
+            jwtService.generateToken(user.getUserEmail(), userId);
 	    	logger.debug("user authenticated");
-			return jwtService.generateToken(user.getUserEmail());
+			return ResponseEntity.ok().headers(headers).body("Logged in");
 		}
 		}
 		catch(BadCredentialsException ex){
 			throw new IncorrectPasswordException("Password does not match");
 		}
-		return "Unable to login";
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unable to login");
 	}
+	
+	public Users verifyUserById(Integer userId) {
+		   return userRepositoryInterface.findByUserId(userId)
+		                .orElseThrow(() -> new UserNotFoundException("User does not exist"));
+	}
+	
 }

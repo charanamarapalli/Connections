@@ -36,8 +36,8 @@ public class SecurityConfig {
 		logger.debug("Started Security Filter chain");
 		http.csrf(a -> a.disable());
 		http.authorizeHttpRequests(a->
-		a.requestMatchers("api/**").permitAll());
-		//.anyRequest().authenticated());   //to make sure all requests are authorized
+		a.requestMatchers("api/login/**", "api/registerUser/**").permitAll()
+		.anyRequest().authenticated());   //to make sure all requests are authorized
 		//http.formLogin(Customizer.withDefaults());  // form login - Session gets stored
 		http.httpBasic(Customizer.withDefaults());   // Basic authentication - No session stored, 
 		// every time we send credentials (login user name and password) through authorization headers 

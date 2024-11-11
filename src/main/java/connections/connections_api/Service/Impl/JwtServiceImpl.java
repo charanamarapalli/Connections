@@ -37,9 +37,11 @@ public class JwtServiceImpl implements JwtService {
         }
     }
 
-    public String generateToken(String userEmail) {
+    @Override
+    public String generateToken(String userEmail, Integer userId) {
     	logger.debug("generate Key");
         Map<String, Object> claims = new HashMap<>();
+        claims.put("userId", userId);
         return Jwts.builder()
                 .claims()
                 .add(claims)
@@ -83,6 +85,7 @@ public class JwtServiceImpl implements JwtService {
         return (userEmail.equals(userDetails.getUsername()) && !isTokenExpired(jwtToken));
     }
 
+   
     private boolean isTokenExpired(String jwtToken) {
     	logger.debug("verify if token expired or not");
         return extractExpiration(jwtToken).before(new Date());
@@ -92,4 +95,9 @@ public class JwtServiceImpl implements JwtService {
     	logger.debug("extract expiration date from claim");
         return extractClaim(jwtToken, Claims::getExpiration);
     }
+
+	public Integer extractUserId(String jwtToken) {
+		Claims claims = extractAllClaims(jwtToken);
+	    return (Integer) claims.get("userId");
+	}
 }

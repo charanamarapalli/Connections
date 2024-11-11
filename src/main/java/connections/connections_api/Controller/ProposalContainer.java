@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +13,7 @@ import connections.connections_api.Service.ProposalService;
 import connections.connections_api.dto.AllProposalDataDto;
 import connections.connections_api.dto.FirstMeetDto;
 import connections.connections_api.dto.ProposalDto;
+import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/api/")
@@ -22,21 +22,28 @@ public class ProposalContainer {
 	@Autowired
 	private ProposalService proposalService;
 	
-	@GetMapping("/getAllProposalData/userId={userId}")
-	public ResponseEntity<AllProposalDataDto> getAllProposalData(@PathVariable Integer userId) {
-		return new ResponseEntity<>(proposalService.getAllProposalDataByUserId(userId), HttpStatus.OK);
+	@GetMapping("/getFirstMeetData")
+	public ResponseEntity<FirstMeetDto> getFirstMeetData(HttpServletRequest request) {
+		Integer userId = (Integer) request.getAttribute("userId");
+		return new ResponseEntity<>(proposalService.getFirstMeetDataByUserId(userId), HttpStatus.OK);
 	}
 	
-	@PostMapping("/saveFirstMeetData/userId={userId}")
-	public ResponseEntity<AllProposalDataDto> saveFirstMeetData(@RequestBody FirstMeetDto firstMeetDto, @PathVariable Integer userId) {
+	@GetMapping("/getProposalData")
+	public ResponseEntity<ProposalDto> getProposalData(HttpServletRequest request) {
+		Integer userId = (Integer) request.getAttribute("userId");
+		return new ResponseEntity<>(proposalService.getProposalDataByUserId(userId), HttpStatus.OK);
+	}
+
+	@PostMapping("/saveFirstMeetData")
+	public ResponseEntity<FirstMeetDto> saveFirstMeetData(@RequestBody FirstMeetDto firstMeetDto, HttpServletRequest request) {
+		Integer userId = (Integer) request.getAttribute("userId");
 		return new ResponseEntity<>(proposalService.saveFirstMeetDataByUserId(userId, firstMeetDto), HttpStatus.OK);
 	}
-	
-	@PostMapping("/saveProposalData/userId={userId}")
-	public ResponseEntity<AllProposalDataDto> saveProposalData(@RequestBody ProposalDto proposalDto, @PathVariable Integer userId) {
+
+	@PostMapping("/saveProposalData")
+	public ResponseEntity<ProposalDto> saveProposalData(@RequestBody ProposalDto proposalDto, HttpServletRequest request) {
+		Integer userId = (Integer) request.getAttribute("userId");
 		return new ResponseEntity<>(proposalService.saveProposalDataByUserId(userId, proposalDto), HttpStatus.OK);
 	}
-	
-	
-	
+
 }

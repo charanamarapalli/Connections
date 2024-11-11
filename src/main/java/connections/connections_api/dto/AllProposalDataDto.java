@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class AllProposalDataDto {
-	private String userEmail;
 	private List<FirstMeetDto> firstMeetDto;
 	private List<ProposalDto> proposalDto;
 }
