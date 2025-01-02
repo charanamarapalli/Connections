@@ -10,7 +10,6 @@ public class FirstMeetMapper {
 		dto.setDescription(firstMeet.getDescription());
 		dto.setTitle(firstMeet.getTitle());
 		dto.setEnabled(firstMeet.isEnabled());
-		System.out.println("i cam from "+ dto.getDescription());
 		return dto;
 		}
 

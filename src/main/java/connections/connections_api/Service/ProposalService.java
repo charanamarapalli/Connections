@@ -2,6 +2,7 @@ package connections.connections_api.Service;
 
 import connections.connections_api.dto.AllProposalDataDto;
 import connections.connections_api.dto.FirstMeetDto;
+import connections.connections_api.dto.HomepageDto;
 import connections.connections_api.dto.ProposalDto;
 
 public interface ProposalService {
@@ -19,4 +20,8 @@ public interface ProposalService {
 	FirstMeetDto getDefaultFirstMeetData();
 	
 	ProposalDto getDefaultProposalData();
+
+	HomepageDto getHomepageDataByUserId(Integer userId);
+
+	HomepageDto saveHomepageDataByUserId(Integer userId, HomepageDto homepageDto);
 }

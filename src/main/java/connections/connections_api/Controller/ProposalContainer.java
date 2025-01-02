@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import connections.connections_api.Service.ApplicantLinkService;
 import connections.connections_api.Service.ProposalService;
 import connections.connections_api.dto.AllProposalDataDto;
 import connections.connections_api.dto.FirstMeetDto;
@@ -21,6 +22,22 @@ public class ProposalContainer {
 
 	@Autowired
 	private ProposalService proposalService;
+	
+	@Autowired
+	private ApplicantLinkService applicantLinkService;
+	
+	@GetMapping("/generateLink")
+	public ResponseEntity<String> createApplicantLink(HttpServletRequest request) {
+	    Integer userId = (Integer) request.getAttribute("userId");
+	    String link = applicantLinkService.getApplicantLink(userId);
+		return new ResponseEntity<>("Link Generated Successfully: "+link, HttpStatus.OK);
+	}
+	
+	@GetMapping("/getAllProposalData")
+	public ResponseEntity<AllProposalDataDto> getAllProposalData(HttpServletRequest request) {
+	    Integer userId = (Integer) request.getAttribute("userId");
+		return new ResponseEntity<>(proposalService.getAllProposalDataByUserId(userId), HttpStatus.OK);
+	}
 	
 	@GetMapping("/getFirstMeetData")
 	public ResponseEntity<FirstMeetDto> getFirstMeetData(HttpServletRequest request) {

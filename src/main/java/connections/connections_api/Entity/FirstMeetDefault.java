@@ -11,16 +11,23 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name="default_proposal_data")
+@Table(name="first_meet_default")
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class DefaultProposalData {
+public class FirstMeetDefault {
+
 	@Id
 	@Column(name="id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
-	@Column(name="content", nullable=false, columnDefinition = "TEXT")
-	private String content;
+	@Column(name="title", nullable=false, length=100)
+	private String title;
+	
+	@Column(name="description", nullable=false, length=2000)
+	private String description;
+	
+	@Column(name="is_enabled", nullable=false)
+	private boolean isEnabled;
 }

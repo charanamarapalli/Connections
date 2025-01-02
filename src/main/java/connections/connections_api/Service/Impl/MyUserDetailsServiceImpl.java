@@ -72,7 +72,6 @@ public class MyUserDetailsServiceImpl implements MyUserDetailsService {
 			Integer userId = verifiedUser.getUserId();
 			HttpHeaders headers = new HttpHeaders();
 	        headers.set("Authorization", "Bearer " + jwtService.generateToken(user.getUserEmail(), userId));
-            jwtService.generateToken(user.getUserEmail(), userId);
 	    	logger.debug("user authenticated");
 			return ResponseEntity.ok().headers(headers).body("Logged in");
 		}
